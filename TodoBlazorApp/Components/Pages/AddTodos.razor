@@ -1,0 +1,47 @@
+﻿@page "/addTodos"
+@rendermode InteractiveServer
+
+@using TodoBlazorApp.Components.Models
+@using TodoBlazorApp.Components.Services
+
+<PageTitle>Add Todo</PageTitle>
+
+<h1>Add Todo</h1>
+
+@if (isTodoAdded)
+{
+    <p class="text-success">Todo added successfully!</p>
+}
+
+<div class="form-group">
+    <label for="title">Title:</label>
+    <input id="title" class="form-control" @bind="newTodo.title" />
+</div>
+
+<div class="form-group">
+    <label for="description">Description:</label>
+    <input id="description" class="form-control" @bind="newTodo.description" />
+</div>
+
+<br />
+
+<button class="btn btn-primary" @onclick="AddTodo">Add Todo</button>
+
+@code {
+    Todo newTodo = new Todo();
+    bool isTodoAdded = false;
+
+    async Task AddTodo()
+    {
+        newTodo.dateTime = DateTime.Now;
+        TodoService.InsertTodo(newTodo);
+        isTodoAdded = true;
+        ClearFields();
+    }
+
+    void ClearFields()
+    {
+        newTodo.title = string.Empty;
+        newTodo.description = string.Empty;
+    }
+}

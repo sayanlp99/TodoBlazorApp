@@ -1,0 +1,46 @@
+﻿@page "/"
+@using TodoBlazorApp.Components.Models
+@using TodoBlazorApp.Components.Services
+@attribute [StreamRendering]
+
+<PageTitle>Todos</PageTitle>
+
+<h1>Todos</h1>
+
+@if (Todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>isCompleted</th>
+                <th>TimeStamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todo in Todos)
+            {
+                <tr>
+                    <td>@todo.title</td>
+                    <td>@todo.description</td>
+                    <td>@todo.isCompleted</td>
+                    <td>@todo.dateTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<Todo> Todos { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Todos = TodoService.GetAllTodos();
+    }
+}
